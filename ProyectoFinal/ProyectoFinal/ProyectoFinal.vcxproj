@@ -141,6 +141,18 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\lamp.frag" />
+    <None Include="Shader\lamp.vs" />
+    <None Include="Shader\lighting.frag" />
+    <None Include="Shader\lighting.vs" />
+    <None Include="Shader\modelLoading.frag" />
+    <None Include="Shader\modelLoading.vs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

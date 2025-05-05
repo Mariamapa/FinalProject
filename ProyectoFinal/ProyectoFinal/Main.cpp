@@ -38,7 +38,7 @@ void DoMovement();
 void Animation();
 
 // Window dimensions
-const GLuint WIDTH = 8000, HEIGHT = 6000;
+const GLuint WIDTH = 800, HEIGHT = 600;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
@@ -441,6 +441,7 @@ int main()
 	Model BrazoD((char*)"Models/Proyecto/BrazoD.obj");
 	Model PiernaI((char*)"Models/Proyecto/PiernaI.obj");
 	Model PiernaD((char*)"Models/Proyecto/PiernaD.obj");
+	Model lampara((char*)"Models/lampara.obj");
 	//=================================================================================================================================
 
 	//KeyFrames
@@ -541,11 +542,13 @@ int main()
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].ambient"), lightColor.x, lightColor.y, lightColor.z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].diffuse"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].specular"), 1.0f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].specular"), 0.0f, 0.0f, 0.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), 0.045f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"), 0.075f);
 
+
+		
 
 		// SpotLight
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.position"), camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
@@ -558,7 +561,119 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.quadratic"), 0.7f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), glm::cos(glm::radians(12.0f)));
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(18.0f)));
+		// =============================================
+		// Primer foco 
+		// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].position"), 0.0f, 5.0f, 0.0f);  // Posición original (centro del techo)
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].outerCutOff"), glm::cos(glm::radians(15.0f)));
 
+		// =============================================
+		// Segundo foco (desplazado a la derecha)
+		// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].position"), 3.0f, 5.0f, 0.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].outerCutOff"), glm::cos(glm::radians(15.0f)));
+
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].position"), -2.5f, 5.0f, 0.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		// 
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].position"), -2.5f, 5.0f, 3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		// 
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].position"), 3.0f, 5.0f, 3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].position"), 0.0f, 5.0f, 2.4f);  // Posición original (centro del techo)
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].cutOff"), glm::cos(glm::radians(8.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		// 
+			//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].position"), -2.5f, 5.0f, -3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		// 
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].position"), 3.0f, 5.0f, -3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].position"), 0.0f, 5.0f, -2.4f);  // Posición original (centro del techo)
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].cutOff"), glm::cos(glm::radians(8.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		// 
 
 		// Set material properties
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 5.0f);
@@ -608,577 +723,583 @@ int main()
 		model = glm::rotate(model, glm::radians(rotDoor), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta.Draw(lightingShader);
-		//==================================Carga de modelos Primera Fila=======================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(2.5f, 0.0f, 0.3f));
-		model = glm::scale(model, TableEsc);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Fila_Mesa1.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos7);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair7), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos6);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair6), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos5);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair5), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos4);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair4), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos3);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair3), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos2);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair2), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos1);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair1), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos1N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair7N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos2N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair6N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_G.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos3N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair5N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos4N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair4N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos5N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair3N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos6N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair2N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_G.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos7N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair1N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_B.Draw(lightingShader);
-		//==================================Carga de modelos Segunda Fila=======================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(1.0f, 0.0f, 0.3f));
-		model = glm::scale(model, TableEsc);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Fila_Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos15);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair15 - 50), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos14);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair14 - 25), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos13);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair13), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos12);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair12), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos11);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair11), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos10);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair10), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos9);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair9), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos8);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair8 + 60), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos8N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair8N + 180), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos9N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair9N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_G.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos10N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair10N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos11N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair11N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos12N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair12N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos13N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair13N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_G.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos14N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair14N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_B.Draw(lightingShader);
-		//==================================Carga de modelos Tercera Fila=======================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-3.2f, 0.0f, 2.6f));
-		model = glm::scale(model, TableEsc);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Fila_Mesa3.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos19);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair19), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos18);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair18), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos17);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair17), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_N.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos16);
-		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair16), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos16N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair16N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_A.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos17N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair17N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_B.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos18N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair18N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_G.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, chairPos19N);
-		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair19N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Silla_Nueva_N.Draw(lightingShader);
-		//======================================================================================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(4.1f, 0.02f, 2.0f));
-		model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
-		model = glm::rotate(model, glm::radians(rotLib), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Libreria.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, Pantalla1Pos);
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		model = glm::rotate(model, glm::radians(rotPantalla), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Pantalla.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, Pantalla2Pos);
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Pantalla.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-2.5f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PantallaInteligente.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, Pizarron1Pos);
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, glm::radians(rotPantalla + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Pizarron.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, Pizarron2Pos);
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, glm::radians(rotPantalla + 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Pizarron.Draw(lightingShader);
-
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(1.5f, 1.1f, -4.3f));
-		model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
-		model = glm::rotate(model, glm::radians(rotExtintor), glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Extintor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-3.0f, YVR, 3.0f));
-		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
-		model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		LentesVR.Draw(lightingShader);
-		//============================================Mesas========================================================================================
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-3.0f, 0.2f, 2.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, glm::radians(rotTable - 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa.Draw(lightingShader);
-		////=====================================Fila1=============================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos1);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos1);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, BrazoIzqPos);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos2);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos2);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos2);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos3);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos3);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos3);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-		//=====================================Fila2=============================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos4);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos4);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos4);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos5);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos5);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos5);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos6);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos6);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos6);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-		//=====================================Fila3=============================================
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos7);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos7);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos7);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos8);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos8);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos8);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, TablePos9);
-		model = glm::scale(model, TableEsc2);
-		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Mesa2.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, PCPos9);
-		model = glm::scale(model, PCEsc);
-		model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PC.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, MonitorPos9);
-		model = glm::scale(model, MonitorEsc);
-		model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Monitor.Draw(lightingShader);
-		//=====================================Modelo de Persona==========================================================
-		model = glm::mat4(1);
-		modelTemp = model = glm::translate(model, glm::vec3(PersonaPosX, PersonaPosY, PersonaPosZ));
-		model = glm::scale(model, PersonaEsc);
-		modelTemp = model = glm::rotate(model, glm::radians(PersonaRot), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Cuerpo.Draw(lightingShader);
-
-		model = modelTemp;
-		model = glm::translate(model, glm::vec3(0.031f, 0.173f, 0.0f));
-		model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Cabeza.Draw(lightingShader);
-
-		model = modelTemp;
-		model = glm::translate(model, glm::vec3(0.061f, 0.107f, -0.05f));
-		model = glm::rotate(model, glm::radians(Brazos1), glm::vec3(-1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		BrazoI.Draw(lightingShader);
-
-		model = modelTemp;
-		model = glm::translate(model, glm::vec3(0.00f, 0.107f, -0.05f));
-		model = glm::rotate(model, glm::radians(Brazos1), glm::vec3(-1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		BrazoD.Draw(lightingShader);
-
-		model = modelTemp;
-		//model = glm::translate(model, glm::vec3(0.082f, -0.046, -0.218));
-		model = glm::rotate(model, glm::radians(Piernas1), glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PiernaI.Draw(lightingShader);
-
-		model = modelTemp;
-		//model = glm::translate(model, glm::vec3(-0.083f, -0.057f, -0.231f));
-		model = glm::rotate(model, glm::radians(Piernas1), glm::vec3(-1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		PiernaD.Draw(lightingShader);
+		////==================================Carga de modelos Primera Fila=======================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(2.5f, 0.0f, 0.3f));
+		//model = glm::scale(model, TableEsc);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Fila_Mesa1.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos7);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair7), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos6);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair6), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos5);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair5), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos4);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair4), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos3);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair3), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos2);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair2), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos1);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair1), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos1N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair7N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos2N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair6N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_G.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos3N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair5N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos4N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair4N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos5N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair3N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos6N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair2N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_G.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos7N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair1N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_B.Draw(lightingShader);
+		////==================================Carga de modelos Segunda Fila=======================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(1.0f, 0.0f, 0.3f));
+		//model = glm::scale(model, TableEsc);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Fila_Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos15);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair15 - 50), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos14);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair14 - 25), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos13);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair13), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos12);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair12), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos11);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair11), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos10);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair10), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos9);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair9), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos8);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair8 + 60), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos8N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair8N + 180), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos9N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair9N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_G.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos10N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair10N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos11N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair11N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos12N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair12N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos13N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair13N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_G.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos14N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair14N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_B.Draw(lightingShader);
+		////==================================Carga de modelos Tercera Fila=======================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(-3.2f, 0.0f, 2.6f));
+		//model = glm::scale(model, TableEsc);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Fila_Mesa3.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos19);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair19), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos18);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair18), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos17);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair17), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_N.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos16);
+		//model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
+		//model = glm::rotate(model, glm::radians(rotChair16), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos16N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair16N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_A.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos17N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair17N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_B.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos18N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair18N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_G.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, chairPos19N);
+		//model = glm::scale(model, chairEsc);
+		//model = glm::rotate(model, glm::radians(rotChair19N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Silla_Nueva_N.Draw(lightingShader);
+		////======================================================================================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(4.1f, 0.02f, 2.0f));
+		//model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
+		//model = glm::rotate(model, glm::radians(rotLib), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Libreria.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, Pantalla1Pos);
+		//model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		//model = glm::rotate(model, glm::radians(rotPantalla), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Pantalla.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, Pantalla2Pos);
+		//model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		//model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Pantalla.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(-2.5f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		//model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PantallaInteligente.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, Pizarron1Pos);
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, glm::radians(rotPantalla + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Pizarron.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, Pizarron2Pos);
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, glm::radians(rotPantalla + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Pizarron.Draw(lightingShader);
+
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(1.5f, 1.1f, -4.3f));
+		//model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
+		//model = glm::rotate(model, glm::radians(rotExtintor), glm::vec3(1.0f, 0.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Extintor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(-3.0f, YVR, 3.0f));
+		//model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		//model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//LentesVR.Draw(lightingShader);
+		////============================================Mesas========================================================================================
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, glm::vec3(-3.0f, 0.2f, 2.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		//model = glm::rotate(model, glm::radians(rotTable - 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa.Draw(lightingShader);
+		//////=====================================Fila1=============================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos1);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos1);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, BrazoIzqPos);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos2);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos2);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos2);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos3);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos3);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos3);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+		////=====================================Fila2=============================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos4);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos4);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos4);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos5);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos5);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos5);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos6);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos6);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos6);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+		////=====================================Fila3=============================================
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos7);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos7);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos7);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos8);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos8);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos8);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, TablePos9);
+		//model = glm::scale(model, TableEsc2);
+		//model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Mesa2.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, PCPos9);
+		//model = glm::scale(model, PCEsc);
+		//model = glm::rotate(model, glm::radians(rotPC), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PC.Draw(lightingShader);
+
+		//model = glm::mat4(1);
+		//model = glm::translate(modelTemp, MonitorPos9);
+		//model = glm::scale(model, MonitorEsc);
+		//model = glm::rotate(model, glm::radians(rotMonitor), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Monitor.Draw(lightingShader);
+		////=====================================Modelo de Persona==========================================================
+		//model = glm::mat4(1);
+		//modelTemp = model = glm::translate(model, glm::vec3(PersonaPosX, PersonaPosY, PersonaPosZ));
+		//model = glm::scale(model, PersonaEsc);
+		//modelTemp = model = glm::rotate(model, glm::radians(PersonaRot), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Cuerpo.Draw(lightingShader);
+
+		//model = modelTemp;
+		//model = glm::translate(model, glm::vec3(0.031f, 0.173f, 0.0f));
+		//model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//Cabeza.Draw(lightingShader);
+
+		//model = modelTemp;
+		//model = glm::translate(model, glm::vec3(0.061f, 0.107f, -0.05f));
+		//model = glm::rotate(model, glm::radians(Brazos1), glm::vec3(-1.0f, 0.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//BrazoI.Draw(lightingShader);
+
+		//model = modelTemp;
+		//model = glm::translate(model, glm::vec3(0.00f, 0.107f, -0.05f));
+		//model = glm::rotate(model, glm::radians(Brazos1), glm::vec3(-1.0f, 0.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//BrazoD.Draw(lightingShader);
+
+		//model = modelTemp;
+		////model = glm::translate(model, glm::vec3(0.082f, -0.046, -0.218));
+		//model = glm::rotate(model, glm::radians(Piernas1), glm::vec3(1.0f, 0.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PiernaI.Draw(lightingShader);
+
+		//model = modelTemp;
+		////model = glm::translate(model, glm::vec3(-0.083f, -0.057f, -0.231f));
+		//model = glm::rotate(model, glm::radians(Piernas1), glm::vec3(-1.0f, 0.0f, 0.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//PiernaD.Draw(lightingShader);
+
+		model = glm::mat4(1);
+		model = glm::translate(modelTemp, glm::vec3(0.0f, 4.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		lampara.Draw(lightingShader);
 		//================================================================================================================
 		// 
 		//================================================================================================================
