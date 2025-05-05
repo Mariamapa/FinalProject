@@ -181,7 +181,7 @@ float Brazos1 = 0.0f;
 float Piernas1 = 0.0f;
 float Cabeza1 = 0.0f;
 float head = 0.0f;
-float YVR = 1.0f;
+float YVR = 0.7f;
 int PersonaAnim1 = 0.0f;
 int PersonaAnim2 = 0.0f;
 int PersonaAnim3 = 0.0f;
@@ -271,7 +271,7 @@ glm::vec3 MonitorPos9(-1.0f, 0.808f, 2.4f);
 //glm::vec3 PersonaPos(4.0f, 1.00f, -3.8f);
 glm::vec3 PersonaPos(PersonaPosX, PersonaPosY, PersonaPosZ);
 glm::vec3 PersonaEsc(1.2f, 1.2f, 1.2f);
-glm::vec3 Lab1Esc(1.0f, 1.0f, 1.0f);
+glm::vec3 Lab1Esc(1.0f, 1.5f, 1.0f);
 glm::vec3 Lab2Esc(0.00001f, 0.00001f, 0.00001f);
 glm::vec3 PCEsc(0.0001f, 0.0001f, 0.0001f);
 glm::vec3 MonitorEsc(0.0001f, 0.0001f, 0.0001f);
@@ -422,7 +422,7 @@ int main()
 	Model Silla_Nueva_N((char*)"Models/Proyecto/Silla_Nueva_N.obj");
 	Model Silla_B((char*)"Models/Proyecto/Silla_B.obj");
 	Model Silla_N((char*)"Models/Proyecto/Silla_N.obj");
-	Model Lab1((char*)"Models/Proyecto/labprueba.obj");
+	Model Lab1((char*)"Models/Proyecto/lab1.obj");
 	Model Lab2((char*)"Models/Proyecto/lab2.obj");
 	Model Techo((char*)"Models/Proyecto/techo.obj");
 	Model PC((char*)"Models/Proyecto/PC.obj");
@@ -599,12 +599,13 @@ int main()
 		Lab2.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(modelTemp, glm::vec3(0.0f, 0.7, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Techo.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(4.9f, 0.63f, -4.7f));
+		model = glm::translate(modelTemp, glm::vec3(4.9f, 0.8f, -4.4f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.7f, 1.0f));
 		model = glm::rotate(model, glm::radians(rotDoor), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta.Draw(lightingShader);
@@ -1372,7 +1373,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 		Lab1Esc.y = 0.0005f;
 		Lab1Esc.z = 0.0005f;
 		Lab2Esc.x = 1.0f;
-		Lab2Esc.y = 1.0f;
+		Lab2Esc.y = 1.5f;
 		Lab2Esc.z = 1.0f;
 		Pantalla1Pos.x = 3.4;
 		Pantalla2Pos.x = -100.8;
@@ -1396,7 +1397,7 @@ void Animation() {
 	//========================================
 	if (AnimVR1)
 	{
-		if (YVR < 3) {
+		if (YVR < 1.8) {
 			YVR += 0.101f;
 		}
 		else {
