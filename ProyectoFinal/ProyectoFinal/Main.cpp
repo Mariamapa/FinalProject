@@ -42,7 +42,7 @@ const GLuint WIDTH = 8000, HEIGHT = 6000;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
-Camera  camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera  camera(glm::vec3(0.0f, 1.0f, 0.0f));
 GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
 bool keys[1024];
@@ -105,7 +105,7 @@ float vertices[] = {
 
 
 //KeyFrames
-float PersonaPosX=4.0f, PersonaPosY=1.0f, PersonaPosZ=-3.8f;
+float PersonaPosX = 6.0f, PersonaPosY = 1.0f, PersonaPosZ = -3.8f;
 
 #define MAX_FRAMES 9
 int i_max_steps = 190;
@@ -170,6 +170,9 @@ bool AnimFurniture = false;
 bool AnimFurniture2 = false;
 bool AnimFurniture3 = false;
 bool AnimFurniture4 = false;
+bool AnimVR1 = false;
+bool AnimVR2 = false;
+bool AnimVR3 = false;
 bool step = false;
 float Brazos = 0.0f;
 float Piernas = 0.0f;
@@ -178,6 +181,7 @@ float Brazos1 = 0.0f;
 float Piernas1 = 0.0f;
 float Cabeza1 = 0.0f;
 float head = 0.0f;
+float YVR = 1.0f;
 int PersonaAnim1 = 0.0f;
 int PersonaAnim2 = 0.0f;
 int PersonaAnim3 = 0.0f;
@@ -188,7 +192,13 @@ float rotMonitor = -90.0f;
 float angulo = 180.0f;
 float rotTable = -270.0f;
 float rotLib = -90.0f;
+float rotDoor = 0.0f;
 float PersonaRot = 0.0f;
+glm::vec3 Pantalla1Pos(1.5f, 0.7f, 3.4f);
+glm::vec3 Pantalla2Pos(-1.3f, 0.7f, -2.5f);
+glm::vec3 Pizarron1Pos(-3.0f, 0.2f, 0.0f);
+glm::vec3 Pizarron2Pos(-3.0f, 0.2f, 2.0f);
+glm::vec3 MesaPos(3.4f, 0.01f, -2.4f);
 glm::vec3 chairPos1(3.4f, 0.01f, -2.4f);
 glm::vec3 chairPos2(3.4f, 0.01f, -1.5f);
 glm::vec3 chairPos3(3.4f, 0.01f, -0.5f);
@@ -248,6 +258,7 @@ glm::vec3 PCPos6(0.8f, 0.05f, 3.0f);
 glm::vec3 PCPos7(-0.7f, 0.05f, -2.6f);
 glm::vec3 PCPos8(-0.7f, 0.05f, 0.6f);
 glm::vec3 PCPos9(-0.7f, 0.05f, 3.0f);
+glm::vec3 VRPos(-3.0f, 0.5f, 3.0f);
 glm::vec3 BrazoIzqPos(2.4f, 0.808f, -3.1f);
 glm::vec3 MonitorPos2(2.4f, 0.808f, 0.0f);
 glm::vec3 MonitorPos3(2.4f, 0.808f, 2.4f);
@@ -260,6 +271,8 @@ glm::vec3 MonitorPos9(-1.0f, 0.808f, 2.4f);
 //glm::vec3 PersonaPos(4.0f, 1.00f, -3.8f);
 glm::vec3 PersonaPos(PersonaPosX, PersonaPosY, PersonaPosZ);
 glm::vec3 PersonaEsc(1.2f, 1.2f, 1.2f);
+glm::vec3 Lab1Esc(1.0f, 1.0f, 1.0f);
+glm::vec3 Lab2Esc(0.00001f, 0.00001f, 0.00001f);
 glm::vec3 PCEsc(0.0001f, 0.0001f, 0.0001f);
 glm::vec3 MonitorEsc(0.0001f, 0.0001f, 0.0001f);
 
@@ -268,9 +281,9 @@ typedef struct _frame {
 
 	float PersonaRot = 0.0f;;
 	float PersonaRotInc = 0.0f;
-	float PersonaPosX=4.0f;
-	float PersonaPosY=1.0f;
-	float PersonaPosZ=-3.8f;
+	float PersonaPosX = 4.0f;
+	float PersonaPosY = 1.0f;
+	float PersonaPosZ = -3.8f;
 	float incX;
 	float incY;
 	float incZ;
@@ -409,11 +422,12 @@ int main()
 	Model Silla_Nueva_N((char*)"Models/Proyecto/Silla_Nueva_N.obj");
 	Model Silla_B((char*)"Models/Proyecto/Silla_B.obj");
 	Model Silla_N((char*)"Models/Proyecto/Silla_N.obj");
-	Model Cuarto((char*)"Models/Proyecto/labprueba.obj");
+	Model Lab1((char*)"Models/Proyecto/labprueba.obj");
+	Model Lab2((char*)"Models/Proyecto/lab2.obj");
 	Model Techo((char*)"Models/Proyecto/techo.obj");
 	Model PC((char*)"Models/Proyecto/PC.obj");
 	Model Libreria((char*)"Models/Proyecto/Libreria.obj");
-	Model Puerta((char*)"Models/Proyecto/Puerta.obj");
+	Model Puerta((char*)"Models/Proyecto/PuertaP.obj");
 	Model Pantalla((char*)"Models/Proyecto/Pantalla.obj");
 	Model PantallaInteligente((char*)"Models/Proyecto/Pantalla_Inteligente.obj");
 	Model Pizarron((char*)"Models/Proyecto/Pizarron.obj");
@@ -571,19 +585,27 @@ int main()
 		//Carga de modelo 
 		//================================================================================================================
 		view = camera.GetViewMatrix();
-		
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Cuarto.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.0f,0.0f, 0.0f));
+		model = glm::translate(modelTemp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, Lab1Esc);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		Lab1.Draw(lightingShader);
+
+		model = glm::mat4(1);
+		model = glm::translate(modelTemp, glm::vec3(0.5f, 0.0f, -1.0f));
+		model = glm::scale(model, Lab2Esc);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		Lab2.Draw(lightingShader);
+
+		model = glm::mat4(1);
+		model = glm::translate(modelTemp, glm::vec3(0.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Techo.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.597f, 0.0f, -0.0f));
+		model = glm::translate(modelTemp, glm::vec3(4.9f, 0.63f, -4.7f));
+		model = glm::rotate(model, glm::radians(rotDoor), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta.Draw(lightingShader);
 		//==================================Carga de modelos Primera Fila=======================================
@@ -600,7 +622,7 @@ int main()
 		model = glm::rotate(model, glm::radians(rotChair7), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_B.Draw(lightingShader);
-		
+
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos6);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
@@ -646,7 +668,7 @@ int main()
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos1N);
 		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair7N+90), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair7N + 90), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_Nueva_A.Draw(lightingShader);
 
@@ -698,32 +720,32 @@ int main()
 		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Fila_Mesa2.Draw(lightingShader);
-		
+
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos15);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair15-50), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair15 - 50), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_N.Draw(lightingShader);
 
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos14);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair14-25), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair14 - 25), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_N.Draw(lightingShader);
 
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos13);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair13 ), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair13), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_B.Draw(lightingShader);
 
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos12);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair12 ), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair12), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_B.Draw(lightingShader);
 
@@ -737,28 +759,28 @@ int main()
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos10);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair10 ), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair10), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_A.Draw(lightingShader);
 
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos9);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair9 ), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair9), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_A.Draw(lightingShader);
 
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos8);
 		model = glm::scale(model, glm::vec3(0.037f, 0.037f, 0.037f));
-		model = glm::rotate(model, glm::radians(rotChair8+60), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair8 + 60), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_B.Draw(lightingShader);
 
 		model = glm::mat4(1);
 		model = glm::translate(modelTemp, chairPos8N);
 		model = glm::scale(model, chairEsc);
-		model = glm::rotate(model, glm::radians(rotChair8N+180), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotChair8N + 180), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Silla_Nueva_A.Draw(lightingShader);
 
@@ -875,16 +897,16 @@ int main()
 		Libreria.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(1.5f, 0.7f, 3.4f));
+		model = glm::translate(modelTemp, Pantalla1Pos);
 		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
 		model = glm::rotate(model, glm::radians(rotPantalla), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Pantalla.Draw(lightingShader);
-		
+
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-1.3f, 0.7f, -2.5f));
+		model = glm::translate(modelTemp, Pantalla2Pos);
 		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		model = glm::rotate(model, glm::radians(rotPantalla-90), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Pantalla.Draw(lightingShader);
 
@@ -896,35 +918,29 @@ int main()
 		PantallaInteligente.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-3.0f, 0.2f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, glm::radians(rotPantalla +90), glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Pizarron.Draw(lightingShader);
-
-		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-3.0f, 0.2f, 2.0f));
+		model = glm::translate(modelTemp, Pizarron1Pos);
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		model = glm::rotate(model, glm::radians(rotPantalla + 90), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Pizarron.Draw(lightingShader);
 
-		//model = glm::mat4(1);
-		//model = glm::translate(modelTemp, glm::vec3(4.0f, 0.2f, -3.0f));
-		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		//Pizarron.Draw(lightingShader);
+		model = glm::mat4(1);
+		model = glm::translate(modelTemp, Pizarron2Pos);
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::rotate(model, glm::radians(rotPantalla + 90), glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		Pizarron.Draw(lightingShader);
+
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.5f, 1.5f, -3.8f));
+		model = glm::translate(modelTemp, glm::vec3(1.5f, 1.1f, -4.3f));
 		model = glm::scale(model, glm::vec3(0.005f, 0.005f, 0.005f));
-		model = glm::rotate(model, glm::radians(rotExtintor ), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotExtintor), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Extintor.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.0f, 0.2f, 0.0f));
+		model = glm::translate(modelTemp, glm::vec3(-3.0f, YVR, 3.0f));
 		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
 		model = glm::rotate(model, glm::radians(rotPantalla - 90), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -939,7 +955,7 @@ int main()
 		Mesa.Draw(lightingShader);
 		////=====================================Fila1=============================================
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp,TablePos1);
+		model = glm::translate(modelTemp, TablePos1);
 		model = glm::scale(model, TableEsc2);
 		model = glm::rotate(model, glm::radians(rotTable), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -1336,7 +1352,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 	{
 		if (play == false && (FrameIndex > 1))
 		{
-			printf("sI SE ESTA PRESIONANDOOOOOO%f");
 			resetElements();
 			//First Interpolation				
 			interpolation();
@@ -1351,18 +1366,55 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 		}
 
 	}
-	if (keys[GLFW_KEY_1])
+	if (keys[GLFW_KEY_V])
 	{
-		if (FrameIndex < MAX_FRAMES)
-		{
-			saveFrame();
-		}
-
+		Lab1Esc.x = 0.0005f;
+		Lab1Esc.y = 0.0005f;
+		Lab1Esc.z = 0.0005f;
+		Lab2Esc.x = 1.0f;
+		Lab2Esc.y = 1.0f;
+		Lab2Esc.z = 1.0f;
+		Pantalla1Pos.x = 3.4;
+		Pantalla2Pos.x = -100.8;
+		rotDoor += 90;
+	}
+	if (keys[GLFW_KEY_C])
+	{
+		AnimVR1 = !AnimVR1;
+		printf("%f", YVR);
+	}
+	if (keys[GLFW_KEY_P])
+	{
+		rotDoor += 90;
 	}
 }
 //GLuint modelLoc = glGetUniformLocation(lampShader.Program, "model");
 void Animation() {
 
+	//=========================================
+	//ANIMACION HACIA ARRIBA
+	//========================================
+	if (AnimVR1)
+	{
+		if (YVR < 3) {
+			YVR += 0.101f;
+		}
+		else {
+			AnimVR1 = !AnimVR1;
+			AnimVR2 = !AnimVR2;
+		}
+	}
+	if (AnimVR2)
+	{
+		if (YVR > 1) {
+			YVR -= 0.101f;
+		}
+		else {
+			AnimVR1 = !AnimVR1;
+			AnimVR2 = !AnimVR2;
+		}
+	}
+	//======================================================
 	if (AnimChairs) {
 		if (chairPos1.z >= -3.8) {
 			chairPos1.z -= 0.01;
@@ -1388,7 +1440,7 @@ void Animation() {
 		}
 
 	}
-	
+
 	if (AnimChairs2) {
 		if (chairPos1.z <= -3.8) {
 			rotChair1 += 1.01;
@@ -1421,7 +1473,7 @@ void Animation() {
 		if (chairPos7.x >= 4.0) {
 			AnimChairs3 = !AnimChairs3;
 		}
-		
+
 	}
 	if (AnimChairs3) {
 		if (chairPos8.z >= -3.8) {
@@ -1486,7 +1538,7 @@ void Animation() {
 		if (chairPos15.x >= 4.0) {
 			AnimChairs5 = !AnimChairs5;
 		}
-		
+
 
 	}
 	if (AnimChairs5) {
@@ -1526,7 +1578,7 @@ void Animation() {
 		}
 	}
 	if (AnimChairs7) {
-		if (chairEsc.z <=1.1) {
+		if (chairEsc.z <= 1.1) {
 			chairEsc.z += 0.01;
 		}
 		if (chairEsc.y <= 1.1) {
@@ -1546,7 +1598,7 @@ void Animation() {
 		if (TableEsc.x >= -0.0001) {
 			TableEsc.x -= 0.001;
 		}
-		if (chairPos1N.x>=2.6) {
+		if (chairPos1N.x >= 2.6) {
 			chairPos1N.x -= 0.01;
 		}
 		if (chairPos1N.z >= -3.5) {
@@ -1618,19 +1670,19 @@ void Animation() {
 		if (chairPos12N.z <= 2.7) {
 			chairPos12N.z += 0.01;
 		}
-		if (chairPos13N.x >=-0.7) {
+		if (chairPos13N.x >= -0.7) {
 			chairPos13N.x -= 0.01;
 		}
-		if (chairPos13N.z >=-3.5) {
+		if (chairPos13N.z >= -3.5) {
 			chairPos13N.z -= 0.01;
 		}
-		if (chairPos14N.x >=-0.7) {
+		if (chairPos14N.x >= -0.7) {
 			chairPos14N.x -= 0.01;
 		}
 		else {
 			AnimFurniture2 = !AnimFurniture2;
 		}
-		if (chairPos14N.z >=-2.7) {
+		if (chairPos14N.z >= -2.7) {
 			chairPos14N.z -= 0.01;
 		}
 		if (chairPos16N.x <= -0.7) {
@@ -1656,9 +1708,9 @@ void Animation() {
 		}
 		if (chairPos19N.z <= 3.4) {
 			chairPos19N.z += 0.01;
-			
+
 		}
-		
+
 	}
 	if (AnimFurniture2) {
 		if (TableEsc2.z <= 0.05) {
@@ -1674,7 +1726,7 @@ void Animation() {
 		else {
 			AnimFurniture3 = !AnimFurniture3;
 		}
-		
+
 	}
 	if (AnimFurniture3) {
 		if (PCEsc.z <= 0.05) {
@@ -1699,7 +1751,7 @@ void Animation() {
 			rotMonitor += 10;
 		}
 	}
-	if (PersonaAnim1 == 1 && FrameIndex<5)
+	if (PersonaAnim1 == 1 && FrameIndex < 5)
 	{
 
 		KeyFrame[FrameIndex].PersonaPosX = PersonaPosX;
@@ -1719,7 +1771,7 @@ void Animation() {
 		KeyFrame[FrameIndex].Brazos = Brazos;
 		KeyFrame[FrameIndex].Piernas = Piernas;
 		FrameIndex++;
-		
+
 		KeyFrame[FrameIndex].PersonaPosX = 4.0f;
 		KeyFrame[FrameIndex].PersonaPosY = 1.0f;
 		KeyFrame[FrameIndex].PersonaPosZ = -3.8f;
@@ -1728,7 +1780,7 @@ void Animation() {
 		KeyFrame[FrameIndex].Brazos = Brazos;
 		KeyFrame[FrameIndex].Piernas = Piernas;
 		FrameIndex++;
-	
+
 		KeyFrame[FrameIndex].PersonaPosX = 3.5f;
 		KeyFrame[FrameIndex].PersonaPosY = 1.0f;
 		KeyFrame[FrameIndex].PersonaPosZ = 1.23f;
@@ -1737,7 +1789,7 @@ void Animation() {
 		KeyFrame[FrameIndex].Brazos = Brazos;
 		KeyFrame[FrameIndex].Piernas = Piernas;
 		FrameIndex++;
-	
+
 		KeyFrame[FrameIndex].PersonaPosX = -1.7f;
 		KeyFrame[FrameIndex].PersonaPosY = 1.0;
 		KeyFrame[FrameIndex].PersonaPosZ = 1.23;
@@ -1775,7 +1827,7 @@ void Animation() {
 		FrameIndex++;
 
 		PersonaAnim1 = 2;
-		
+
 	}
 	if (PersonaAnim1 == 2)
 	{
@@ -1830,7 +1882,7 @@ void Animation() {
 		}
 
 	}
-	}
+}
 
 
 
