@@ -53,7 +53,7 @@ bool active;
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
-	glm::vec3(0.0f,2.0f, 0.0f),
+	glm::vec3(0.0f,2.6f, 0.0f),
 	glm::vec3(0.0f,0.0f, 0.0f),
 	glm::vec3(0.0f,0.0f,  0.0f),
 	glm::vec3(0.0f,0.0f, 0.0f)
@@ -1298,20 +1298,20 @@ int main()
 
 		// Lamparas centrales
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.48f, 1.6f, 0.0f));
+		model = glm::translate(modelTemp, glm::vec3(0.48f, 2.27f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 
 		model = glm::mat4(1); 
-		model = glm::translate(modelTemp, glm::vec3(3.48f, 1.6f, 0.0f));
+		model = glm::translate(modelTemp, glm::vec3(3.48f, 2.27f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-2.0f, 1.6f, 0.0f));
+		model = glm::translate(modelTemp, glm::vec3(-2.0f, 2.27f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
@@ -1319,40 +1319,40 @@ int main()
 		//lamparas laterales
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.48f, 1.6f, 2.4f));
+		model = glm::translate(modelTemp, glm::vec3(0.48f, 2.27f, 2.4f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(3.48f, 1.6f, 3.0f));
+		model = glm::translate(modelTemp, glm::vec3(3.48f, 2.27f, 3.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-2.0f, 1.6f, 3.0f));
+		model = glm::translate(modelTemp, glm::vec3(-2.0f, 2.25f, 3.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 		//lamparas laterales izquierdas
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(0.48f, 1.6f, -2.4f));
+		model = glm::translate(modelTemp, glm::vec3(0.48f, 2.27f, -2.4f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(3.48f, 1.6f, -3.0f));
+		model = glm::translate(modelTemp, glm::vec3(3.48f, 2.27f, -3.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
 
 		model = glm::mat4(1);
-		model = glm::translate(modelTemp, glm::vec3(-2.0f, 1.6f, -3.0f));
+		model = glm::translate(modelTemp, glm::vec3(-2.0f, 2.27f, -3.0f));
 		model = glm::scale(model, glm::vec3(0.00001f, 0.00001f, 0.00001f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.Draw(lightingShader);
