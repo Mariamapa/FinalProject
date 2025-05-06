@@ -14,4 +14,4 @@ newmtl Material__25
 	Ni 1.5200
 	Ke 0.0000 0.0000 0.0000
 	illum 2
-	map_Kd \Proyecto\maps\Textura_Blanca.jpg
+	map_Kd \maps\Textura_Blanca.jpg

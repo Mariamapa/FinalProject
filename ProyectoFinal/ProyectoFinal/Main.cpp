@@ -441,7 +441,7 @@ int main()
 	Model BrazoD((char*)"Models/Proyecto/BrazoD.obj");
 	Model PiernaI((char*)"Models/Proyecto/PiernaI.obj");
 	Model PiernaD((char*)"Models/Proyecto/PiernaD.obj");
-	Model lampara((char*)"Models/lampara1.obj");
+	Model lampara((char*)"Models/Proyecto/lampara1.obj");
 	//=================================================================================================================================
 
 	//KeyFrames
