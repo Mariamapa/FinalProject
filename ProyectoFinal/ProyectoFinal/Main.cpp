@@ -695,9 +695,9 @@ int main()
 		glm::mat4 model(1);
 		glm::mat4 modelTemp(1);
 
-
 		//================================================================================================================
-		//Carga de modelo 
+		//Carga de modelO
+		// 
 		//================================================================================================================
 		view = camera.GetViewMatrix();
 
@@ -2062,8 +2062,6 @@ void Animation() {
 
 	}
 }
-
-
 
 
 void MouseCallback(GLFWwindow* window, double xPos, double yPos) {
