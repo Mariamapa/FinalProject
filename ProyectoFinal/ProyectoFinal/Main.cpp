@@ -422,7 +422,7 @@ int main()
 	Model Silla_Nueva_N((char*)"Models/Proyecto/Silla_Nueva_N.obj");
 	Model Silla_B((char*)"Models/Proyecto/Silla_B.obj");
 	Model Silla_N((char*)"Models/Proyecto/Silla_N.obj");
-	Model Lab1((char*)"Models/Proyecto/lab1.obj");
+	Model Lab1((char*)"Models/Proyecto/labprueba.obj");
 	Model Lab2((char*)"Models/Proyecto/lab2.obj");
 	Model Techo((char*)"Models/Proyecto/techo.obj");
 	Model PC((char*)"Models/Proyecto/PC.obj");
@@ -541,7 +541,7 @@ int main()
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].ambient"), lightColor.x, lightColor.y, lightColor.z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].diffuse"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].specular"), 1.0f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].specular"), 1.0f, 1.0f, 1.0);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), 0.045f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"), 0.075f);
@@ -558,6 +558,121 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.quadratic"), 0.7f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), glm::cos(glm::radians(12.0f)));
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(18.0f)));
+
+		// =============================================
+		// Primer foco 
+		// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].position"), 0.0f, 5.0f, 0.0f);  // Posición original (centro del techo)
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[0].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[0].outerCutOff"), glm::cos(glm::radians(15.0f)));
+
+		// =============================================
+		// Segundo foco (desplazado a la derecha)
+		// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].position"), 3.0f, 5.0f, 0.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[1].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[1].outerCutOff"), glm::cos(glm::radians(15.0f)));
+
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].position"), -2.5f, 5.0f, 0.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[2].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[2].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		// 
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].position"), -2.5f, 5.0f, 3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[3].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[3].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		// 
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].position"), 3.0f, 5.0f, 3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[4].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[4].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].position"), 0.0f, 5.0f, 2.4f);  // Posición original (centro del techo)
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[5].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].cutOff"), glm::cos(glm::radians(8.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[5].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		// 
+			//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].position"), -2.5f, 5.0f, -3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[6].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[6].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		// 
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].position"), 3.0f, 5.0f, -3.0f);  // 3 unidades a la derecha en X
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[7].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].cutOff"), glm::cos(glm::radians(10.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[7].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		//	// =============================================
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].position"), 0.0f, 5.0f, -2.4f);  // Posición original (centro del techo)
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].direction"), 0.0f, -1.0f, 0.0f); // Dirección hacia abajo
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].ambient"), 0.2f, 0.2f, 0.2f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].diffuse"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight[8].specular"), 0.5f, 0.5f, 0.5f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].linear"), 0.09f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].cutOff"), glm::cos(glm::radians(8.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight[8].outerCutOff"), glm::cos(glm::radians(15.0f)));
+		// 
+
 
 
 		// Set material properties
@@ -1180,6 +1295,8 @@ int main()
 		model = glm::rotate(model, glm::radians(Piernas1), glm::vec3(-1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PiernaD.Draw(lightingShader);
+
+
 		//================================================================================================================
 		// 
 		//================================================================================================================
@@ -1190,13 +1307,13 @@ int main()
 		viewLoc = glGetUniformLocation(lampShader.Program, "view");
 		projLoc = glGetUniformLocation(lampShader.Program, "projection");
 
-		// Set matrices
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		model = glm::mat4(1);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//// Set matrices
+		//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		//glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		//model = glm::mat4(1);
+		//model = glm::translate(model, lightPos);
+		//model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		// Draw the light object (using light's vertex attributes)
 
 		model = glm::mat4(1);
